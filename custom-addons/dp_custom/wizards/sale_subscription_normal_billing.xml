@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018-Today datenpol gmbh(<http://www.datenpol.at>)
+     License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses). -->
+
+<odoo>
+
+    <record id="sale_subscription_normal_billing_view_form" model="ir.ui.view">
+        <field name="name">view_sale_subscription_normal_billing_form</field>
+        <field name="model">sale.subscription_normal_billing</field>
+        <field name="arch" type="xml">
+            <form string="Sale Subscription_normal_billing">
+                <group>
+                    <span>Sollen die ausgewählten Abonnements verrechnet werden?</span>
+                </group>
+                <footer>
+                    <button name="button_confirm"
+                        string="Bestätigen"
+                        class="btn-primary"
+                        type="object"/>
+                    <button string="Abbrechen"
+                        class="btn-default"
+                        special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="sale_subscription_normal_billing_wizard_action" model="ir.actions.act_window">
+        <field name="name">Verrechnung</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.subscription_normal_billing</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="sale_subscription_normal_billing_view_form"/>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_sale_subscription"/>
+    </record>
+     
+
+</odoo>

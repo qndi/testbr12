@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017-Today datenpol gmbh (<https://www.datenpol.at/>)
+    License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses).
+-->
+
+<odoo>
+    <record id="project_project_form_view" model="ir.ui.view">
+        <field name="name">project_project_form_view</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="is_chargeable"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="hr_timesheet_line_tree" model="ir.ui.view">
+        <field name="name">hr_timesheet_line_tree</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+        <field name="arch" type="xml">
+            <field name="task_id" position="after">
+                <field name="so_line"/>
+                <field name="employee_id"/>
+            </field>
+        </field>
+    </record>
+</odoo>

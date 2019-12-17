@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="dp_partner_form_view" model="ir.ui.view">
+            <field name="name">DP Partner Form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <field name="website" position="after">
+                    <field name="eb_interface_para"/>
+                    <field name="eb_group" attrs="{'invisible':[('eb_interface_para','!=','group')], 'required':[('eb_interface_para','=','group')]}"/>
+                    <field name="eb_bank_id"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017-Today datenpol gmbh (<https://www.datenpol.at/>)
+    License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses).
+-->
+
+<odoo>
+    <record id="mt_timesheet_confirmed" model="mail.message.subtype">
+        <field name="name">Time Report bestätigt</field>
+        <field name="description">Time Report bestätigt</field>
+        <field name="res_model">dp.timesheet</field>
+    </record>
+
+    <record id="mt_timesheet_approved" model="mail.message.subtype">
+        <field name="name">Time Report genehmigt</field>
+        <field name="description">Time Report genehmigt</field>
+        <field name="res_model">dp.timesheet</field>
+    </record>
+
+    <record id="mt_timesheet_rejected" model="mail.message.subtype">
+        <field name="name">Time Report abgelehnt</field>
+        <field name="description">Time Report abgelehnt</field>
+        <field name="res_model">dp.timesheet</field>
+    </record>
+
+    <record id="mt_timesheet_reopened" model="mail.message.subtype">
+        <field name="name">Time Report wieder geöffnet</field>
+        <field name="description">Time Report wieder geöffnet</field>
+        <field name="res_model">dp.timesheet</field>
+    </record>
+
+
+    <record forcecreate="True" id="decimal_hr_time" model="decimal.precision">
+        <field name="name">HR Time</field>
+        <field name="digits">2</field>
+    </record>
+</odoo>

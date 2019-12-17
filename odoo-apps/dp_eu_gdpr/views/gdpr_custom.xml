@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright 2017-Today datenpol gmbh (<https://www.datenpol.at/>)
+    License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses).
+-->
+
+<odoo>
+    <record id="dp_eu_gdpr_log_form_view" model="ir.ui.view">
+        <field name="name">eu.gdpr.log.form</field>
+        <field name="model">eu.gdpr_log</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" invisible="1"/>
+                        <field name="date"/>
+                        <field name="user_id"/>
+                        <field name="operation"/>
+                        <field name="object"/>
+                        <field name="dataset"/>
+                        <field name="partner"/>
+                        <field name="note"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="dp_eu_gdpr_log_tree_view" model="ir.ui.view">
+        <field name="name">eu.gdpr.log.tree</field>
+        <field name="model">eu.gdpr_log</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date"/>
+                <field name="user_id"/>
+                <field name="operation"/>
+                <field name="object"/>
+                <field name="dataset"/>
+                <field name="partner"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="dp_eu_gdpr_form_view" model="ir.ui.view">
+        <field name="name">eu.gdpr.form</field>
+        <field name="model">eu.gdpr</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="info" nolabel="1" class="info-box" attrs="{'invisible': [('info', '=', False)]}"/>
+                    <group>
+                        <label for="operation"/>
+                        <div>
+                            <field name="operation"/>
+                            <field name="help" nolabel="1"/>
+                        </div>
+                        <field name="object" required="1"/>
+                        <field name="partner"/>
+                        <field name="note"/>
+                    </group>
+                    <footer>
+                        <button name="process" string="Execute Operation" type="object" class="oe_highlight"/>
+                        or
+                        <button special="cancel" string="Cancel" class="oe_link"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017-Today datenpol gmbh (<https://www.datenpol.at/>)
+    License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses).
+-->
+
+<odoo>
+    <record id="dp_timesheet_form_view" model="ir.ui.view">
+        <field name="name">dp_timesheet_form_view</field>
+        <field name="model">dp.timesheet</field>
+        <field name="inherit_id" ref="dp_hr.dp_timesheet_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="check_warnings" type="object" string="Überprüfen" attrs="{'invisible': ['|', ('state', '!=', 'open'), ('button_check', '=', True)]}"/>
+            </xpath>
+
+            <xpath expr="//button[@name='action_confirm']" position="attributes">
+                <attribute name="attrs">{'invisible': ['|', ('state', '!=', 'open'), ('button_check', '=', False)]}</attribute>
+                <attribute name="states"/>
+            </xpath>
+
+            <xpath expr="//div[hasclass('oe_button_box')]" position="after">
+                <field name="button_check" invisible="1"/>
+                <group name="warnings" string="Warnungen" attrs="{'invisible': [('warning_ids', '=', [])]}">
+                    <field name="warning_ids" mode="tree" nolabel="1" readonly="1">
+                        <tree decoration-danger="1==1">
+                            <field name="date"/>
+                            <field name="description"/>
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

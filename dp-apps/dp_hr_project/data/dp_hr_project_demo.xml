@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017-Today datenpol gmbh (<https://www.datenpol.at/>)
+    License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses).
+-->
+
+<odoo noupdate="1">
+    <!-- User Groups -->
+    <record id="hr_timesheet.group_hr_timesheet_user" model="res.groups">
+        <field name="users" eval="[(4, ref('base.user_demo'), 0)]"/>
+    </record>
+
+
+    <!-- Companies -->
+    <record id="base.main_company" model="res.company">
+        <field name="suggest_remaining_time" eval="True"/>
+    </record>
+
+
+    <!-- Projects -->
+    <record id="project.project_project_2" model="project.project">
+        <field name="is_chargeable" eval="False"/>
+    </record>
+
+
+    <!-- Sale line/Employee maps -->
+    <record id="sale_emp_map_qdp_1" model="project.sale.line.employee.map">
+        <field name="project_id" search="[('sale_line_id', '=', ref('sale_timesheet.sale_line_13'))]"/>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+        <field name="sale_line_id" ref="sale_timesheet.sale_line_11"/>
+    </record>
+
+
+    <!-- Analytic Lines -->
+    <record id="aal_qdp_1" model="account.analytic.line">
+        <field name="task_id" search="[('sale_line_id', '=', ref('sale_timesheet.sale_line_13'))]"/>
+        <field name="project_id" search="[('sale_line_id', '=', ref('sale_timesheet.sale_line_13'))]"/>
+        <field name="name">Clean up dishwasher</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+        <field name="date">2018-10-01</field>
+        <field name="unit_amount">4.00</field>
+        <field name="so_line" ref="sale_timesheet.sale_line_13"/>
+    </record>
+
+    <record id="aal_qdp_2" model="account.analytic.line">
+        <field name="task_id" search="[('sale_line_id', '=', ref('sale_timesheet.sale_line_13'))]"/>
+        <field name="project_id" search="[('sale_line_id', '=', ref('sale_timesheet.sale_line_13'))]"/>
+        <field name="name">Water plants</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+        <field name="date">2018-10-01</field>
+        <field name="unit_amount">2.00</field>
+    </record>
+
+    <record id="aal_qdp_3" model="account.analytic.line">
+        <field name="task_id" ref="project.project_task_11"/>
+        <field name="project_id" ref="project.project_project_2"/>
+        <field name="name">Create a sensible design</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+        <field name="date">2018-10-02</field>
+        <field name="unit_amount">2.00</field>
+    </record>
+</odoo>

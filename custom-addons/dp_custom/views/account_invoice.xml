@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018-Today datenpol gmbh(<http://www.datenpol.at>)
+     License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses). -->
+
+<odoo>
+
+    <record id="account_invoice_view_form_inherit" model="ir.ui.view">
+        <field name="name">dp_account_invoice_view_form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_info']/group/group[1]/field[@name='name']" position="after">
+                <field name="is_subsequent"/>
+                <field name="subscription_partner_id"/>
+                <field name="subscription_template_id"/>
+                <field name="subscription_invoice_date"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

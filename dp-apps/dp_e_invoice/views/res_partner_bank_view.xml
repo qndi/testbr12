@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- RES_PARTNER_BANK - FORM -->
+        <record id="dp_view_partner_bank_form" model="ir.ui.view">
+            <field name="name">E-Rechnung Partner Bank Form</field>
+            <field name="model">res.partner.bank</field>
+            <field name="inherit_id" ref="base.view_partner_bank_form"/>
+            <field name="arch" type="xml">
+				<field name="acc_number" position="after">
+					<field name="bank_for_eb"/>
+				</field>
+			</field>
+		</record>
+
+		<!-- RES_PARTNER_BANK - TREE -->
+        <record id="dp_view_partner_bank_tree" model="ir.ui.view">
+            <field name="name">E-Rechnung Partner Bank Tree</field>
+            <field name="model">res.partner.bank</field>
+            <field name="inherit_id" ref="base.view_partner_bank_tree"/>
+            <field name="arch" type="xml">
+				<field name="partner_id" position="after">
+					<field name="bank_for_eb"/>
+				</field>
+            </field>
+		</record>
+    </data>
+</odoo>

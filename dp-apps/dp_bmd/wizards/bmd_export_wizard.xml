@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018-Today datenpol gmbh(<http://www.datenpol.at>)
+     License OPL-1 or later (https://www.odoo.com/documentation/user/11.0/legal/licenses/licenses.html#licenses). -->
+
+<odoo>
+
+    <record id="view_bmd_export_wizard_form" model="ir.ui.view">
+        <field name="name">view_bmd_export_wizard_form</field>
+        <field name="model">bmd.export.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Bmd Export Wizard">
+                <group>
+                    <field name="type"/>
+                    <field name="group"/>
+                </group>
+                <group attrs="{'invisible': [('type', '!=', 'date_range')]}">
+                    <field name="date_begin" attrs="{'required': [('type', '==', 'date_range')]}"/>
+                    <field name="date_end" attrs="{'required': [('type', '==', 'date_range')]}"/>
+                </group>
+                <footer>
+                    <button name="do_export"
+                        string="OK"
+                        class="btn-primary"
+                        type="object"/>
+                    <button string="Abbrechen"
+                        class="btn-default"
+                        special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="action_bmd_export_wizard"
+        name="BMD Export Wizard"
+        res_model="bmd.export.wizard"
+        view_mode="form"
+        view_type="form"
+        multi="True"
+        target="new"
+        key2="client_action_multi"
+    />
+     
+
+</odoo>

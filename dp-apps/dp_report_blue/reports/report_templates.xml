@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_assets_common" inherit_id="web.report_assets_common">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/scss" href="/dp_report_blue/static/src/scss/layout_dp_blue.scss"/>
+        </xpath>
+    </template>
+
+    <template id="external_layout_datenpol_blue">
+        <div class="header">
+            <div class="o_blue_header">
+                <div class="row">
+                    <div class="col-6">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo"/>
+                    </div>
+                    <div class="col-5 offset-1 text-right" name="company_address">
+                        <ul class="list-unstyled">
+                            <strong><li t-if="company.name"><span t-field="company.name"/></li></strong>
+                            <li><span t-field="company.street"/></li>
+                            <li><span t-field="company.zip" style="padding-right: 5px;"/><span t-field="company.city"/></li>
+                            <li t-if="company.vat"><t t-esc="company.country_id.vat_label or 'Tax ID'"/>: <span t-field="company.vat"/></li>
+                            <li t-if="company.phone">Tel: <span t-field="company.phone"/></li>
+                            <li t-if="company.email"><span t-field="company.email"/></li>
+                            <li t-if="company.website"><span t-field="company.website"/></li>
+                            <li><span><!-- Leerzeile --></span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="article o_report_layout_blue" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+             t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-call="web.address_layout"/>
+            <t t-raw="0"/>
+        </div>
+
+        <div class="footer o_blue_footer">
+
+            <div class="row mt8" style="border-top: 2px solid black;">
+                <div class="col-4" style="padding:0">
+                    <span t-field="company.report_footer_left"/>
+                </div>
+                <div class="col-4 text-center" style="padding:0">
+                    <span t-field="company.report_footer"/>
+                </div>
+                <div class="col-4 text-right" style="padding:0">
+
+                    <div t-if="report_type != 'html'" class="row">
+                        <div class="col-12">
+                            <span>Seite:</span>
+                            <strong><span class="page"/></strong>
+                            <span>/</span>
+                            <span class="topage"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Diese Nummer wird im Hauptreport gesetzt (zB. account.report_invoice_document) -->
+                        <div class="col-12" t-if="overlay_number">
+                            <span t-esc="overlay_number"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Verschiebt den Kundenblock nach links.
+         Rechnungs- und Lieferadresse kommen nach rechts -->
+    <template id="dp_blue_address_layout" inherit_id="web.address_layout">
+        <xpath expr="t[@t-set='colclass']" position="replace">
+            <t t-set="colclass" t-value="('col-md-8' if report_type == 'html' else 'col-8')"/>
+        </xpath>
+        <xpath expr="//div[@class='address row']" position="replace">
+            <div class="address row">
+                <div name="address" t-att-class="colclass">
+                    <t t-raw="address"/>
+                </div>
+                <t t-if="information_block">
+                    <t t-set="colclass" t-value="'col-4'"/>
+                    <div name="information_block" class="col-4">
+                        <t t-raw="information_block"/>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

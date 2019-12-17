@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="default_e_invoice_username" model="ir.config_parameter">
+            <field name="key">e_invoice.username</field>
+            <field name="value">username</field>
+        </record>
+
+        <record id="default_e_invoice_password" model="ir.config_parameter">
+            <field name="key">e_invoice.password</field>
+            <field name="value">password</field>
+        </record>
+
+        <record id="default_e_invoice_response_email" model="ir.config_parameter">
+            <field name="key">e_invoice.response_email</field>
+            <field name="value">response@email.at</field>
+        </record>
+
+        <record id="default_e_invoice_invoice_recipient_biller_id" model="ir.config_parameter">
+            <field name="key">e_invoice.invoice_recipient_biller_id</field>
+            <field name="value">123456789</field>
+        </record>
+    </data>
+</odoo>

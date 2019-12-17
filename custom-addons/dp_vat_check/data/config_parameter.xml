@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="parameter_vat_check_fon_tid" model="ir.config_parameter">
+            <field name="key">vat_check.fon_tid</field>
+            <field name="value">tid</field>
+        </record>
+        <record id="parameter_vat_check_fon_benid" model="ir.config_parameter">
+            <field name="key">vat_check.fon_benid</field>
+            <field name="value">benid</field>
+        </record>
+        <record id="parameter_vat_check_fon_pin" model="ir.config_parameter">
+            <field name="key">vat_check.fon_pin</field>
+            <field name="value">pin</field>
+        </record>
+    </data>
+</odoo>

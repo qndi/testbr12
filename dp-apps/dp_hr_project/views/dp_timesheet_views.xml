@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017-Today datenpol gmbh (<https://www.datenpol.at/>)
+    License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses).
+-->
+
+<odoo>
+    <record id="dp_timesheet_day_view_tree" model="ir.ui.view">
+        <field name="name">dp_timesheet_day_view_tree</field>
+        <field name="model">dp.timesheet.day</field>
+        <field name="inherit_id" ref="dp_hr.dp_timesheet_day_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="overtime_actual" position="after">
+                <field name="project_hours" widget="float_time" readonly="True" sum="Gesamte Projektzeiten"/>
+                <field name="chargeable_hours" widget="float_time" readonly="True" sum="Gesamte abrechenbare Zeit"/>
+                <field name="billable_hours" widget="float_time" readonly="True" sum="Gesamte verrechenbare Zeit"/>
+            </field>
+        </field>
+    </record>
+
+
+    <record id="dp_timesheet_form_view" model="ir.ui.view">
+        <field name="name">dp_timesheet_form_view</field>
+        <field name="model">dp.timesheet</field>
+        <field name="inherit_id" ref="dp_hr.dp_timesheet_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="action_project_hours" icon="fa-calendar" class="oe_stat_button" type="object">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Projektzeiten</span>
+                    </div>
+                </button>
+            </xpath>
+
+            <field name="vacation_new" position="before">
+                <label for="chargeability"/>
+                <div class="o_row">
+                    <field name="chargeability"/>
+                    %
+                </div>
+                <label for="billability"/>
+                <div class="o.row">
+                    <field name="billability"/>
+                    %
+                </div>
+            </field>
+        </field>
+    </record>
+
+    <record id="dp_timesheet_view_tree" model="ir.ui.view">
+        <field name="name">dp_timesheet_view_tree</field>
+        <field name="model">dp.timesheet</field>
+        <field name="inherit_id" ref="dp_hr.dp_timesheet_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="vacation_merged" position="after">
+                <field name="project_hours"/>
+                <field name="chargeable_hours"/>
+                <field name="chargeability"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="dp_timesheet_chargebility_search_view" model="ir.ui.view">
+        <field name="name">dp_timesheet_chargebility_search_view</field>
+        <field name="model">dp.timesheet</field>
+        <field name="inherit_id" ref="dp_hr.dp_timesheet_view_search"/>
+        <field name="arch" type="xml">
+            <filter name="approved" position="after">
+                <filter name="department" string="Abteilung" context="{'group_by': 'department_id'}"/>
+                <filter name="month" string="Monat" context="{'group_by': 'date_from:month'}"/>
+                <filter name="year" string="Jahr" context="{'group_by': 'date_from:year'}"/>
+            </filter>
+        </field>
+    </record>
+
+    <record id="dp_timesheet_chargebility_tree_view" model="ir.ui.view">
+        <field name="name">dp_timesheet_chargebility_tree_view</field>
+        <field name="model">dp.timesheet</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="date_from" string="Datum"/>
+                <field name="chargeable_hours" sum="Chargeable"/>
+                <field name="attendance_planned" sum="Geplante Anwesenheit"/>
+                <field name="billable_hours" sum="Billable"/>
+                <field name="billability"/>
+                <field name="chargeability"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="dp_timesheet_chargebility_act_window" model="ir.actions.act_window">
+        <field name="name">Chargeability</field>
+        <field name="res_model">dp.timesheet</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="dp_timesheet_chargebility_tree_view"/>
+        <field name="search_view_id" ref="dp_timesheet_chargebility_search_view"/>
+    </record>
+
+    <menuitem id="dp_timesheet_menu_chargebility"
+        name="Chargeability"
+        parent="dp_hr.timesheets_reports_menu"
+        action="dp_timesheet_chargebility_act_window"
+        groups="hr_timesheet.group_timesheet_manager"
+    />
+</odoo>

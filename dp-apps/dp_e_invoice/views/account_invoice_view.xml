@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="invoice_form_view" model="ir.ui.view">
+        <field name="name">account.invoice.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr='//button[@name="action_invoice_sent"][1]' position="replace">
+                <button name="action_invoice_sent" type="object" string="Send &amp; Print"
+                        attrs="{'invisible':['|','|',('sent','=',True), ('state', 'not in', ('open','in_payment','paid')), ('is_customer_of_bund','=',True)]}"
+                        class="oe_highlight" groups="base.group_user"/>
+                <button name="action_send_e_invoice" type="object" string="E-Rechnung abschicken"
+                        attrs="{'invisible':['|','|',('state', '!=', 'open'), ('is_customer_of_bund','=',False), ('e_invoice_transmitted','=',True)]}"
+                        class="oe_highlight" groups="base.group_user"/>
+            </xpath>
+            <xpath expr='//button[@name="action_invoice_sent"][2]' position="replace">
+                <button name="action_invoice_sent" type="object" string="Send &amp; Print"
+                        attrs="{'invisible':['|','|',('sent','=',False), ('state', 'not in', ('open','in_payment','paid')), ('is_customer_of_bund','=',True)]}"
+                        groups="base.group_user"/>
+            </xpath>
+
+            <field name="partner_id" position="after">
+                <field name="is_customer_of_bund" invisible="True"/>
+                <field name="e_invoice_transmitted" invisible="True"/>
+            </field>
+
+            <field name="payment_term_id" position="after">
+                <label for="period_of_performance_from" string="Leistungszeitraum für E-Rechnung"
+                       attrs="{'invisible':[('is_customer_of_bund', '=', False)]}"/>
+                <div attrs="{'invisible':[('is_customer_of_bund', '=', False)]}">
+                    <span style="vertical-align: sub">von</span>
+                    <field name="period_of_performance_from" class="oe_inline"/>
+                    <span style="vertical-align: sub">bis</span>
+                    <field name="period_of_performance_to" class="oe_inline"/>
+                </div>
+            </field>
+            <xpath expr='//page[@name="other_info"]//field[@name="name"]' position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'not in', ['draft', 'open'])]}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

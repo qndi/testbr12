@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="report_layout_dp_blue" model="report.layout">
+        <field name="view_id" ref="dp_report_blue.external_layout_datenpol_blue"/>
+        <field name="image">/dp_report_blue/static/img/preview_dp.png</field>
+        <field name="pdf">/dp_report_blue/static/pdf/preview_dp.pdf</field>
+    </record>
+</odoo>

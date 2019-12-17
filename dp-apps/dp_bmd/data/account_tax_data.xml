@@ -1,0 +1,3 @@
+<odoo noupdate="1">
+    <function model="bmd.export" name="set_default_bmd_codes"/>
+</odoo>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_e_invoice_wizard" model="ir.ui.view">
+            <field name="name">E-Invoice Wizard</field>
+            <field name="model">e_invoice.wizard</field>
+            <field name="arch" type="xml">
+                <form string="E-Rechnung">
+                    <div><h3>Optionale Dokumente</h3></div>
+                    <group>
+                        <group>
+                            <field name="document_1" filename="filename_document_1"/>
+                            <field name="filename_document_1" invisible="1"/>
+
+                            <field name="document_2" filename="filename_document_2"/>
+                            <field name="filename_document_2" invisible="1"/>
+
+                            <field name="document_3" filename="filename_document_3"/>
+                            <field name="filename_document_3" invisible="1"/>
+
+                            <field name="document_4" filename="filename_document_4"/>
+                            <field name="filename_document_4" invisible="1"/>
+
+                            <field name="document_5" filename="filename_document_5"/>
+                            <field name="filename_document_5" invisible="1"/>
+                        </group>
+                        <group></group>
+                    </group>
+                    <footer>
+                        <button name="send_e_invoice" string="E-Rechnung senden" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

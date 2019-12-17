@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017-Today datenpol gmbh (<https://www.datenpol.at/>)
+    License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses).
+-->
+
+<odoo>
+    <record id="view_wizard_hr_break_form" model="ir.ui.view">
+        <field name="name">view_wizard_hr_break_form</field>
+        <field name="model">wizard.hr.break</field>
+        <field name="arch" type="xml">
+            <form string="Wizard Hr Break">
+                <group>
+                    <field name="date"/>
+                    <field name="duration" widget="float_time"/>
+                </group>
+                <footer>
+                    <button name="process_break"
+                        string="Pause eintragen"
+                        class="btn-primary"
+                        type="object"/>
+                    <button string="Abbrechen"
+                        class="btn-default"
+                        special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="action_wizard_hr_break"
+        name="Pause eintragen"
+        res_model="wizard.hr.break"
+        src_model=""
+        view_mode="form"
+        view_type="form"
+        multi="True"
+        target="new"
+        key2="client_action_multi"
+    />
+
+    <menuitem id="menu_wizard_hr_break"
+        name="Pause eintragen"
+        parent="timesheets_attendance_menu"
+        action="action_wizard_hr_break"
+        sequence="90"
+    />
+</odoo>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="cron_sync_partner_from_efsta_cloud" model="ir.cron">
+        <field name="name">Sync Partner von der EFSTA-Cloud</field>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_sync_from_efsta_cloud()</field>
+        <field name="nextcall">2010-01-01 02:00:00</field>
+    </record>
+
+    <record id="cron_sync_cashreg_from_efsta_cloud" model="ir.cron">
+        <field name="name">Sync Kassen von der EFSTA-Cloud</field>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_efr_cash_register"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_sync_from_efsta_cloud()</field>
+        <field name="nextcall">2010-01-01 02:00:00</field>
+    </record>
+
+    <record id="cron_sync_transaction_from_efsta_cloud" model="ir.cron">
+        <field name="name">Sync Transaktionen von der EFSTA-Cloud</field>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_efr_transactions"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_sync_from_efsta_cloud()</field>
+        <field name="nextcall">2010-01-01 02:00:00</field>
+    </record>
+
+    <record id="cron_sync_location_from_efsta_cloud" model="ir.cron">
+        <field name="name">Sync Standorte von der EFSTA-Cloud</field>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_efr_location"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_sync_from_efsta_cloud()</field>
+        <field name="nextcall">2010-01-01 02:00:00</field>
+    </record>
+
+    <record id="cron_invoice_upgrades" model="ir.cron">
+        <field name="name">Verrechnung von Transaktionsüberschreitungen (Nachverrechnung)</field>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_sale_subscription"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_invoice_upgrades()</field>
+    </record>
+
+    <record id="cron_create_efr_subscription" model="ir.cron">
+        <field name="name">Abos automatisch erstellen</field>
+        <field name="active" eval="False"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_create_efr_subscription()</field>
+    </record>
+
+</odoo>

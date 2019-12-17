@@ -1,0 +1,98 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-11-16 08:08+0000\n"
+"PO-Revision-Date: 2017-11-16 08:08+0000\n"
+"Last-Translator: JackTheHunter <Maximilian.N98@gmail.com>, 2017\n"
+"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: hr_timesheet
+#: model:ir.ui.view,arch_db:hr_timesheet.view_project_kanban_inherited
+msgid "<span class=\"o_label\">Timesheets</span>"
+msgstr ""<span class=\"o_label\">Projektzeiten</span>"
+
+#. module: hr_timesheet
+#: model:ir.ui.view,arch_db:hr_timesheet.hr_employee_view_form_inherit_timesheet
+msgid "<span class=\"o_stat_text\">Timesheets</span>"
+msgstr "<span class=\"o_stat_text\">Projektzeiten</span>"
+
+
+#. module: hr_timesheet
+#: model:ir.ui.view,arch_db:hr_timesheet.report_timesheet
+msgid "<span>Timesheet Entries</span>"
+msgstr "<span>Projektzeiten</span>"
+
+#. module: hr_timesheet
+#: model:ir.actions.act_window,name:hr_timesheet.timesheet_action_all
+#: model:ir.ui.menu,name:hr_timesheet.timesheet_menu_activity_all
+msgid "All Timesheets"
+msgstr "Alle Projektzeiten"
+
+#. module: hr_timesheet
+#: model:ir.model.fields,field_description:hr_timesheet.field_project_project_allow_timesheets
+#: model:ir.ui.view,arch_db:hr_timesheet.project_invoice_form
+msgid "Allow timesheets"
+msgstr "Erlaube Projektzeiten"
+
+#. module: hr_timesheet
+#: model:ir.actions.act_window,name:hr_timesheet.act_hr_timesheet_line
+#: model:ir.ui.menu,name:hr_timesheet.timesheet_menu_activity_mine
+#: model:ir.ui.view,arch_db:hr_timesheet.hr_timesheet_line_search
+msgid "My Timesheets"
+msgstr "Meine Projektzeiten"
+
+
+#. module: hr_timesheet
+#: model:ir.ui.menu,name:hr_timesheet.menu_hr_time_tracking
+#: model:ir.ui.menu,name:hr_timesheet.menu_timesheets_reports_timesheet
+#: model:ir.ui.view,arch_db:hr_timesheet.hr_timesheet_line_search
+#: model:ir.ui.view,arch_db:hr_timesheet.view_hr_timesheet_line_pivot
+msgid "Timesheet"
+msgstr "Projektzeiten"
+
+#. module: hr_timesheet
+#: model:ir.ui.view,arch_db:hr_timesheet.hr_timesheet_line_tree
+#: model:ir.ui.view,arch_db:hr_timesheet.view_task_form2_inherited
+msgid "Timesheet Activities"
+msgstr "Projektzeiten"
+
+#. module: hr_timesheet
+#: model:ir.ui.view,arch_db:hr_timesheet.res_config_settings_view_form
+msgid "Timesheet Apps"
+msgstr ""
+
+#. module: hr_timesheet
+#: model:ir.actions.act_window,name:hr_timesheet.project_task_action_view_timesheet
+#: model:ir.actions.report,name:hr_timesheet.timesheet_report
+msgid "Timesheet Entries"
+msgstr "Projektzeiten"
+
+#. module: hr_timesheet
+#: model:ir.ui.view,arch_db:hr_timesheet.hr_timesheet_line_search
+msgid "Timesheet Month"
+msgstr "monatliche Projektzeiten"
+
+#. module: hr_timesheet
+#: model:ir.ui.view,arch_db:hr_timesheet.hr_timesheet_line_search
+msgid "Timesheet by Month"
+msgstr "Projektzeiten nach Monat"
+
+#. module: hr_timesheet
+#: model:ir.actions.act_window,name:hr_timesheet.timesheet_action_from_employee
+#: model:ir.model.fields,field_description:hr_timesheet.field_project_task_timesheet_ids
+#: model:ir.ui.menu,name:hr_timesheet.timesheet_menu_root
+#: model:ir.ui.view,arch_db:hr_timesheet.hr_department_view_kanban
+#: model:ir.ui.view,arch_db:hr_timesheet.hr_employee_view_form_inherit_timesheet
+#: model:ir.ui.view,arch_db:hr_timesheet.project_invoice_form
+#: model:ir.ui.view,arch_db:hr_timesheet.res_config_settings_view_form
+#: model:ir.ui.view,arch_db:hr_timesheet.timesheet_view_calendar
+#: model:ir.ui.view,arch_db:hr_timesheet.view_project_kanban_inherited
+#: model:ir.ui.view,arch_db:hr_timesheet.view_task_form2_inherited
+msgid "Timesheets"
+msgstr "Projektzeiten"

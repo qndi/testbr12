@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017-Today datenpol gmbh (<https://www.datenpol.at/>)
+    License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses).
+-->
+
+<odoo>
+    <record id="hr_attendance.menu_hr_attendance_root" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_no_one')])]"/>
+    </record>
+
+    <record id="hr_holidays.menu_hr_holidays_root" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_no_one')])]"/>
+    </record>
+
+
+    <menuitem id="timesheets_menu"
+        name="dp Time Report"
+        web_icon="dp_hr,static/description/icon.png"
+        groups="base.group_user"
+    />
+
+    <menuitem id="timesheets_timesheets_menu"
+        parent="timesheets_menu"
+        action="dp_timesheet_action"
+        sequence="10"
+    />
+
+    <menuitem id="timesheets_attendance_menu"
+        name="Anwesenheiten"
+        parent="timesheets_menu"
+        sequence="20"
+    />
+
+    <menuitem id="timesheets_attendance_my_attendances_menu"
+        name="Check In / Check Out"
+        parent="timesheets_attendance_menu"
+        action="hr_attendance.hr_attendance_action_my_attendances"
+        sequence="10"
+    />
+
+    <menuitem id="timesheets_attendance_overview_menu"
+        name="Übersicht"
+        parent="timesheets_attendance_menu"
+        action="hr_attendance.hr_attendance_action"
+        sequence="20"
+    />
+
+    <menuitem id="timesheets_leaves_menu"
+        parent="timesheets_menu"
+        action="open_leave_action"
+        sequence="30"
+    />
+
+    <menuitem id="timesheets_reports_menu"
+        name="Berichtswesen"
+        parent="timesheets_menu"
+        sequence="40"
+    />
+
+    <menuitem id="timesheets_reports_employee_menu"
+        parent="timesheets_reports_menu"
+        action="dp_timesheet_action_report"
+        sequence="10"
+        groups="hr_attendance.group_hr_attendance_manager"
+    />
+
+    <menuitem id="timesheets_reports_all_leaves_menu"
+        parent="timesheets_reports_menu"
+        action="hr_holidays.action_hr_holidays_dashboard"
+        sequence="20"
+        groups="hr_attendance.group_hr_attendance_manager"
+    />
+
+    <menuitem id="timesheets_management_menu"
+        name="Verwaltung"
+        parent="timesheets_menu"
+        sequence="50"
+        groups="hr_attendance.group_hr_attendance_manager"
+    />
+
+    <menuitem id="timesheets_management_overtime_menu"
+        parent="timesheets_management_menu"
+        action="dp_overtime_action"
+        sequence="10"
+    />
+
+    <menuitem id="timesheets_management_leave_allocations_menu"
+        parent="timesheets_management_menu"
+        action="open_leave_allocation_action"
+        sequence="20"
+    />
+
+    <menuitem id="timesheets_management_sickness_menu"
+        parent="timesheets_management_menu"
+        action="open_sickness_action"
+        sequence="30"
+    />
+
+    <menuitem id="timesheets_management_public_holidays_menu"
+        name="Feiertage"
+        parent="timesheets_management_menu"
+        sequence="40"
+    />
+
+    <menuitem id="timesheets_management_public_holidays_holidays_menu"
+        parent="timesheets_management_public_holidays_menu"
+        action="open_public_holiday_action"
+        sequence="10"
+    />
+
+    <menuitem id="timesheets_management_public_holidays_holidays_template_menu"
+        parent="timesheets_management_public_holidays_menu"
+        action="dp_leave_template_action"
+        sequence="20"
+    />
+
+    <!-- sequence 30 is used by the wizard dp.leave.template.import -->
+
+    <menuitem id="timesheets_management_leave_types_menu"
+        parent="timesheets_management_menu"
+        action="hr_holidays.open_view_holiday_status"
+        sequence="50"
+    />
+</odoo>

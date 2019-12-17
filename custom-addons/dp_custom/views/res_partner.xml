@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018-Today datenpol gmbh(<http://www.datenpol.at>)
+     License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses). -->
+
+<odoo>
+
+    <record id="dp_custom_res_partner_view_form_inherit" model="ir.ui.view">
+        <field name="name">dp_custom_res_partner_view_form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="sst_create_partner" string="Im Portal erstellen" type="object" icon="fa-cloud-upload"
+                            class="btn_primary"
+                            attrs="{'invisible': ['|',('portal_id', '!=', False), ('is_reseller', '!=', True)]}"/>
+                </header>
+            </xpath>
+            <xpath expr="//div[@name='button_box']//button" position="before">
+                <button name="show_cash_register" type="object" icon="fa-credit-card" class="oe_stat_button">
+                    <field name="cash_register_count" widget="statinfo" string="Kassen"/>
+                </button>
+                <button name="show_locations" type="object" icon="fa-map-marker" class="oe_stat_button">
+                    <field name="location_count" widget="statinfo" string="Standorte"/>
+                </button>
+                <button name="dp_custom.efr_transactions_action" type="action" icon="fa-exchange"
+                        class="oe_stat_button" string="Transaktionen"
+                        context="{'search_default_partner_id': active_id, 'default_partner_id': active_id}"/>
+            </xpath>
+            <field name="function" position="before">
+                <field name="is_reseller"/>
+                <field name="single_invoice"/>
+                <field name="has_active_cash_register" invisible="1"/>
+            </field>
+            <field name="vat" position="before">
+                <field name="reseller_partner_id"/>
+                <field name="portal_id"/>
+                <field name="ecit"/>
+                <field name="eci"/>
+                <field name="manual_invoice_partner_id"/>
+            </field>
+
+            <field name="property_payment_term_id" position="after">
+                <field name="efr_invoice_term_id"/>
+                <field name="subscription_template_id"/>
+            </field>
+
+            <xpath expr="//notebook" position="inside">
+                <page name="portal_sst" string="SST Portal" modifiers="{}">
+                    <button name="button_sync_sst_partner" type="object" string="Sync Company" class="btn-secondary"/>
+                    <button name="button_sync_cashreg" type="object" string="Sync Kassen" class="btn-secondary"/>
+                    <button name="button_sync_transactions" type="object" string="Sync Transaktionen"
+                            class="btn-secondary"/>
+                    <button name="create_efr_subscription" type="object" string="Abo Erstellen"
+                            class="btn-secondary" attrs="{'invisible': [('has_active_cash_register', '=', False)]}"/>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="dp_res_partner_search_view_inherit" model="ir.ui.view">
+        <field name="name">dp_res_partner_search_view_inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <filter name="inactive" position="after">
+                <filter string="Ist ein Vertriebspartner" name="is_reseller" domain="[]"
+                        context="{'group_by':'is_reseller'}"/>
+            </filter>
+        </field>
+    </record>
+
+
+</odoo>

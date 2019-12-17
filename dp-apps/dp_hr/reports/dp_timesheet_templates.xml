@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017-Today datenpol gmbh (<https://www.datenpol.at/>)
+    License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses).
+-->
+
+<odoo>
+    <!-- Paperformat A4 Landscape -->
+    <record id="paperformat_euro_landscape_no_margin" model="report.paperformat">
+        <field name="name">European A4 Landscape without borders</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">15</field>
+        <field name="margin_bottom">15</field>
+        <field name="margin_left">15</field>
+        <field name="margin_right">15</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+    </record>
+
+    <!-- QWeb Report -->
+    <report
+        id="dp_timesheet_report"
+        model="dp.timesheet"
+        string="Auswertung Zeiterfassung"
+        report_type="qweb-pdf"
+        paperformat="dp_hr.paperformat_euro_landscape_no_margin"
+        name="dp_hr.dp_timesheet_report_template"
+        file="dp_hr.dp_timesheet_report_template"
+    />
+
+    <!-- Report Template -->
+    <template id="dp_timesheet_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="dp_hr.dp_timesheet_report_document"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="internal_layout">
+        <!-- Multicompany -->
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+
+        <div class="article">
+            <t t-raw="0"/>
+        </div>
+
+        <div class="footer" style="border-top: 2px solid #000000;">
+            <div class="row">
+                <div class="col-3">
+                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+                </div>
+
+                <div class="col-2 offset-2 text-center">
+                    <span t-esc="company.name"/>
+                </div>
+
+                <div class="col-2 offset-3 text-right">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><span class="page"/></li>
+                        <li class="list-inline-item">/</li>
+                        <li class="list-inline-item"><span class="topage"/></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Report Template -->
+    <template id="dp_timesheet_report_document">
+        <t t-call="dp_hr.internal_layout">
+            <style type="text/css">
+                body {
+                    font-size: 10pt;
+                    line-height: 1;
+                }
+            </style>
+
+            <div class="page">
+                <div class="row">
+                    <div class="col-6">
+                        <h2>
+                            Zeiterfassung
+                            <span t-field="o.date_from" t-options="{'format': 'MMMM Y'}"/>,
+                            <span t-field="o.employee_id.name"/>
+                        </h2>
+                    </div>
+
+                    <div class="col-6 text-right">
+                        <img t-if="res_company.logo"
+                            t-att-src="'data:image/png;base64,%s' % to_text(res_company.logo)"
+                            style="max-height: 65px;"
+                        />
+                    </div>
+                </div>
+
+                <div id="general_information" class="row">
+                    <div class="col-3">
+                        Zeitraum:
+                        <span t-field="o.date_from"/>
+                        bis
+                        <span t-field="o.date_to"/>
+                    </div>
+
+                    <div class="col-3">
+                        Status:
+                        <span t-field="o.state"/>
+                    </div>
+                </div>
+
+                <div id="time_table" class="row mt32">
+                    <div class="col-xs-12">
+                        <table class="table table-bordered .small">
+                            <tbody>
+                                <tr style="padding-top: 10px; border-bottom: 2px solid #000000">
+                                    <td style="width: 20mm; vertical-align: bottom;">
+                                        <strong>
+                                            <span t-field="o.date_from" t-options="{'format': 'MMMM'}"/>
+                                        </strong>
+                                    </td>
+                                    <td class="text-center" t-foreach="o.day_ids" t-as="day">
+                                        <span t-field="day.weekday"/>
+                                        <br/>
+                                        <strong>
+                                            <span t-field="day.date" t-options="{'format': 'dd'}"/>
+                                        </strong>
+                                    </td>
+                                    <td style="width: 10mm; vertical-align: bottom; border-left: 2px solid #000000;">
+                                        <strong>Gesamt</strong>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Geplant</td>
+                                    <td class="text-right" t-foreach="o.day_ids" t-as="day">
+                                        <span t-if="day.attendance_planned and day.date &lt;= datetime.date.today()"
+                                            t-field="day.attendance_planned"/>
+                                    </td>
+                                    <td class="text-right" style="border-left: 2px solid #000000;">
+                                        <strong>
+                                            <span t-if="o.attendance_planned" t-field="o.attendance_planned"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Anwesenheit</td>
+                                    <td t-foreach="o.day_ids" t-as="day" class="text-right">
+                                        <span t-if="day.attendance_actual" t-field="day.attendance_actual"/>
+                                        <span t-if="day.compensation_spent">ZA</span>
+                                    </td>
+                                    <td class="text-right" style="border-left: 2px solid #000000;">
+                                        <strong>
+                                            <span t-if="o.attendance_actual" t-field="o.attendance_actual"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Reisezeit</td>
+                                    <td t-foreach="o.day_ids" t-as="day" class="text-right">
+                                        <span t-if="day.travel_time" t-field="day.travel_time"/>
+                                    </td>
+                                    <td class="text-right" style="border-left: 2px solid #000000;">
+                                        <strong>
+                                            <span t-if="o.travel_time" t-field="o.travel_time"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="width: 10%;">Urlaub</td>
+                                    <td t-foreach="o.day_ids" t-as="day" class="text-right">
+                                        <span t-if="day.vacation_spent" t-field="day.vacation_spent_in_hours"/>
+                                    </td>
+                                    <td class="text-right" style="border-left: 2px solid #000000;">
+                                        <strong>
+                                            <span t-if="o.vacation_spent" t-field="o.vacation_spent_in_hours"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="width: 8%;">Krankenstand</td>
+                                    <td t-foreach="o.day_ids" t-as="day" class="text-right">
+                                        <span t-if="day.sickness_spent" t-field="day.sickness_spent_in_hours"/>
+                                    </td>
+                                    <td class="text-right" style="border-left: 2px solid #000000;">
+                                        <strong>
+                                            <span t-if="o.sickness_spent" t-field="o.sickness_spent_in_hours"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Sonstiges</td>
+                                    <td class="text-right" t-foreach="o.day_ids" t-as="day">
+                                        <span t-if="day.others_spent" t-field="day.others_spent_in_hours"/>
+                                    </td>
+                                    <td class="text-right" style="border-left: 2px solid #000000;">
+                                        <strong>
+                                            <span t-if="o.others_spent" t-field="o.others_spent_in_hours"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+
+                                <tr style="border-top: 2px solid #000000;">
+                                    <td>Mehrstunden</td>
+                                    <td class="text-right" t-foreach="o.day_ids" t-as="day">
+                                        <span t-if="day.overtime_actual and day.date &lt;= datetime.date.today()" t-field="day.overtime_actual"/>
+                                    </td>
+                                    <td class="text-right" style="border-left: 2px solid #000000;">
+                                        <strong>
+                                            <span t-if="o.overtime_actual" t-field="o.overtime_actual"/>
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="additional_info" class="row mt-5">
+                    <div class="col-6">
+                        <table class="table table-condensed">
+                            <tbody>
+                                <tr style="border-bottom: 2px solid #000000;">
+                                    <th colspan="2" style="width: 90%; border-top: none;">Mehrstunden in Stunden:</th>
+                                </tr>
+
+                                <tr>
+                                    <td>Übertrag vom vorigen Time Report, Stichtag<span
+                                        t-field="o.date_effective_carryover"/>:
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <span t-field="o.overtime_carryover" style="font-weight: bold;"/>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Auf diesem Time Report:</td>
+                                    <td style="text-align: right;">
+                                        <span t-field="o.overtime_actual" style="font-weight: bold;"/>
+                                    </td>
+                                </tr>
+
+                                <tr t-foreach="o.overtime_correction_ids" t-as="correction">
+                                    <td>
+                                        <span t-field="correction.name" style="font-style: italic;"/>:
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <span t-field="correction.hours" style="font-weight: bold;"/>
+                                    </td>
+                                </tr>
+
+                                <tr style="border-top: 2px solid #000000;">
+                                    <td>Gesamt:</td>
+                                    <td style="text-align: right;">
+                                        <span t-field="o.overtime_total" style="font-weight: bold;"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="table table-condensed">
+                            <tbody>
+                                <tr style="border-bottom: 2px solid #000000;">
+                                    <th colspan="2" style="width: 90%; border-top: none;">Urlaub in Tagen:</th>
+                                </tr>
+
+                                <tr>
+                                    <td>Übertrag vom vorigen Time Report, Stichtag<span
+                                        t-field="o.date_effective_carryover"/>:
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <span t-field="o.vacation_carryover" style="font-weight: bold;"/>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Auf diesem Time Report:</td>
+                                    <td style="text-align: right;">
+                                        <span style="font-weight: bold; ">
+                                            <span t-if="o.vacation_spent">-</span>
+                                            <span t-field="o.vacation_spent"/>
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr style="border-bottom: 2px solid #000000;">
+                                    <td>Zuschreibung:</td>
+                                    <td style="text-align: right;">
+                                        <span t-field="o.vacation_new" style="font-weight: bold;"/>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Verbleibend:</td>
+                                    <td style="text-align: right;">
+                                        <span t-field="o.vacation_total" style="font-weight: bold;"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

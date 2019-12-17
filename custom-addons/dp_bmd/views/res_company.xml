@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018-Today datenpol gmbh(<http://www.datenpol.at>)
+     License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses). -->
+
+<odoo>
+
+    <record id="res_company_view_form_inherit" model="ir.ui.view">
+        <field name="name">dp_res_company_view_form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[1]" position="inside">
+                <group>
+                    <group string="Debitorenkonto Konfiguration">
+                        <field name="create_bmd_debit_account"/>
+                        <field name="debit_account_sequence"
+                               attrs="{'required': [('create_bmd_debit_account', '==', 'on_first_invoice')]}"/>
+                    </group>
+                    <group string="Kreditorenkonto Konfiguration">
+                        <field name="create_bmd_credit_account"/>
+                        <field name="credit_account_sequence"
+                               attrs="{'required': [('create_bmd_credit_account', '==', 'on_first_invoice')]}"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

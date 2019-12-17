@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018-Today datenpol gmbh(<http://www.datenpol.at>)
+     License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses). -->
+
+<odoo>
+
+    <!-- Sale Subscription -->
+    <record id="sale_subscription_view_form_inherit" model="ir.ui.view">
+        <field name="name">dp_sale_subscription_view_form</field>
+        <field name="model">sale.subscription</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_form"/>
+        <field name="arch" type="xml">
+            <page id="settings" position="before">
+                <page string="Kassen" id="cash_registers">
+                    <field name="cash_register_ids"/>
+                </page>
+            </page>
+            <field name="partner_id" position="after">
+                <field name="invoice_partner_id"/>
+            </field>
+            <field name="template_id" position="after">
+                <field name="invoice_term_id"/>
+            </field>
+            <field name="recurring_invoice_line_ids" position="before">
+                <button name="button_update_lines" type="object" string="Update der Zeilen" class="btn-secondary"/>
+            </field>
+            <xpath expr="//field[@name='recurring_invoice_line_ids']/tree/field[@name='name']" position="after">
+                <field name="efr_location_id"/>
+            </xpath>
+
+            <xpath expr="//group[@name='main']/group[2]/div/button[@name='recurring_invoice']" position="replace">
+                <button string="⇒ Erstelle Rechnung" class="oe_link" name="recurring_invoice" type="object"
+                        attrs="{'invisible': [('payment_mode', '=', 'manual')]}"/>
+            </xpath>
+
+            <notebook position="inside">
+                <page string="Nachverrechnung">
+                    <group>
+                        <group>
+                            <field name="recurring_upgrades_last_date"/>
+                            <field name="recurring_upgrades_next_date"/>
+                            <button string="⇒ Jetzt nachverrechnen" class="oe_link" name="button_invoice_upgrades"
+                                    type="object"/>
+                        </group>
+                    </group>
+                </page>
+            </notebook>
+
+            <field name="code" position="after">
+                <field name="order_ref"/>
+            </field>
+
+            <field name="to_renew" position="after">
+                <field name="offline_sub"/>
+                <field name="check_sub"/>
+            </field>
+
+            <!-- Display information for offline-abonnements -->
+            <xpath expr="//sheet" position="before">
+                <div class="alert alert-warning" role="alert" style="text-align: center;font-size:12pt;"
+                     attrs="{'invisible': [('offline_sub', '=', False)]}">
+                    <span>
+                        <b>Offline-Abo</b>
+                    </span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Sale Subscription Tree View -->
+    <record id="sale_subscription_view_tree_inherit" model="ir.ui.view">
+        <field name="name">dp_sale_subscription_view_tree</field>
+        <field name="model">sale.subscription</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_list"/>
+        <field name="arch" type="xml">
+            <field name="percentage_satisfaction" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <!-- Sale Subscription Search View -->
+    <record id="sale_subscription_view_search_inherit" model="ir.ui.view">
+        <field name="name">dp_sale_subscription_view_search</field>
+        <field name="model">sale.subscription</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_search"/>
+        <field name="arch" type="xml">
+            <filter name="open" position="before">
+                <filter name="offline_abo" string="Offline-Abonnements" domain="[('offline_sub', '=', True)]"/>
+                <filter name="online_abo" string="Online-Abonnements" domain="[('offline_sub', '=', False)]"/>
+                <separator/>
+            </filter>
+            <filter name="contracts_not_assigned" position="after">
+                <separator/>
+                <filter name="to_invoice" string="Abzurechnen"
+                        domain="['|', ('recurring_next_date', '&lt;=', context_today().strftime('%Y-%m-%d')),
+                                      ('recurring_upgrades_next_date', '&lt;=', context_today().strftime('%Y-%m-%d'))]"/>
+            </filter>
+        </field>
+    </record>
+
+    <!-- Add context to the existing subscription action -->
+    <record id="sale_subscription.sale_subscription_action" model="ir.actions.act_window">
+        <field name="context">{
+            "group_by": "stage_id",
+            "search_default_my_subscriptions":1,
+            "search_default_online_abo":1
+            }
+        </field>
+    </record>
+
+    <!-- New subscription action for offline subscription -->
+    <record id="offline_sale_subscription_action" model="ir.actions.act_window">
+        <field name="name">Offline-Abonnements</field>
+        <field name="res_model">sale.subscription</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form,pivot,graph,cohort,activity</field>
+        <field name="context">{
+            "group_by": "stage_id",
+            "search_default_my_subscriptions":1,
+            "search_default_offline_abo":1
+            }
+        </field>
+        <field name="domain">[]</field>
+        <field name="search_view_id" eval='False'/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new subscription
+            </p>
+            <p>
+                Create subscriptions to manage recurring invoicing &amp; payments. Subscriptions can
+                be time-bounded or not. In case of a limited period, they are flagged as to be renewed
+                one month from the end date.
+            </p>
+            <p>
+                Subscriptions can be automatically generated from sales orders in Sales or eCommerce
+                apps. To do so, set a subscription template on your subscription products.
+            </p>
+        </field>
+    </record>
+
+    <!-- set sequence of the menuitem 'Zu erneuernde Aboaufträge' to place 'Offline-Abonnements' under 'Abonnements' -->
+    <menuitem action="sale_subscription.sale_subscription_action_pending"
+              id="sale_subscription.menu_sale_subscription_pending"
+              sequence="3"
+              parent="sale_subscription.menu_sale_subscription"/>
+
+
+    <menuitem id="menu_offline_subscriptions"
+              name="Offline-Abonnements"
+              parent="sale_subscription.menu_sale_subscription"
+              action="offline_sale_subscription_action"
+              sequence="2"
+    />
+
+    <!-- Sale Subscription Template -->
+    <record id="sale_subscription_template_view_form_inherit" model="ir.ui.view">
+        <field name="name">dp_sale_subscription_template_view_form</field>
+        <field name="model">sale.subscription.template</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_template_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='invoicing']/div[1]" position="after">
+                <field name="merge_invoices" attrs="{'invisible': [('recurring_rule_type', '!=', 'monthly')]}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

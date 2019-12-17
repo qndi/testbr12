@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="contact_mit_absender" inherit_id="base.contact">
+        <xpath expr="//address" position="before">
+            <div t-if="'absender' in fields">
+                <div name="company_address" style="font-size: 9pt; margin-bottom: 10px;">
+                    <span style="border-bottom: 1px solid black;">
+                        <span t-esc="object.company_id.name"/>
+                        |
+                        <span t-esc="object.company_id.street"/>
+                        |
+                        <span t-esc="object.company_id.zip"/>
+                        <span t-esc="object.company_id.city"/>
+                    </span>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

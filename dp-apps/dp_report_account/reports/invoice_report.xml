@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2017-Today datenpol gmbh(<http://www.datenpol.at>)
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+
+<odoo>
+
+
+    <template id="report_invoice_document_with_number" inherit_id="account.report_invoice_document">
+        <xpath expr="//span[@t-field='o.number']" position="after">
+            <t t-set="overlay_number" t-value="o.number"/>
+        </xpath>
+    </template>
+
+</odoo>

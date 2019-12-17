@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="dp_bmd_menu" name="BMD" parent="account.menu_finance" sequence="20"/>
+    <menuitem id="dp_bmd_wizard_menu" name="BMD Export Wizard" parent="dp_bmd_menu" sequence="1" action="action_bmd_export_wizard"/>
+    <menuitem id="dp_bmd_exports_menu" name="BMD-Exports" parent="dp_bmd_menu" sequence="2" action="action_bmd_export"/>
+</odoo>

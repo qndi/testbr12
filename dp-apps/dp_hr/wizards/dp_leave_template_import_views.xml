@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017-Today datenpol gmbh (<https://www.datenpol.at/>)
+    License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses).
+-->
+
+<odoo>
+    <record id="dp_leave_template_import_view_form" model="ir.ui.view">
+         <field name="name">dp_leave_template_import_view_form</field>
+         <field name="model">dp.leave.template.import</field>
+         <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="template_id"/>
+                    <field name="employee_ids"/>
+                </group>
+
+                <footer>
+                    <button name="do_import" string="Importieren" type="object" class="btn-primary"/>
+                    oder
+                    <button string="Abbrechen" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+         </field>
+     </record>
+
+    <record id="dp_leave_template_import_action" model="ir.actions.act_window">
+         <field name="name">Feiertage importieren</field>
+         <field name="res_model">dp.leave.template.import</field>
+         <field name="type">ir.actions.act_window</field>
+         <field name="view_type">form</field>
+         <field name="view_mode">form</field>
+         <field name="view_id" ref="dp_leave_template_import_view_form"/>
+         <field name="context">{}</field>
+         <field name="target">new</field>
+   </record>
+
+    <menuitem
+        id="timesheets_management_holidays_template_import_menu"
+        action="dp_leave_template_import_action"
+        parent="timesheets_management_public_holidays_menu"
+        sequence="30"
+    />
+</odoo>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017-Today datenpol gmbh (<https://www.datenpol.at/>)
+    License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses).
+-->
+
+<odoo noupdate="1">
+    <function model="hr.attendance" name="on_install"/>
+
+    <record id="hr_holidays.holiday_status_comp" model="hr.leave.type">
+        <field name="allocation_type">no</field>
+    </record>
+
+    <record id="leave_type_vacation" model="hr.leave.type">
+        <field name="name">Urlaub</field>
+        <field name="allocation_type">fixed</field>
+        <field name="color_name">lavender</field>
+        <field name="validity_start">2018-01-01</field>
+    </record>
+
+    <record id="leave_type_public_holiday" model="hr.leave.type">
+        <field name="name">Feiertage</field>
+        <field name="allocation_type">no</field>
+        <field name="color_name">lightgreen</field>
+        <field name="validity_start">2018-01-01</field>
+    </record>
+
+
+    <!--
+        Keep this below the leave types needed by the function
+    -->
+    <function model="res.company" name="dp_hr_postinstall"/>
+
+
+    <record id="cron_create_timesheets" model="ir.cron">
+        <field name="name">Time Report erstellen</field>
+        <field name="model_id" ref="model_dp_timesheet"/>
+        <field name="state">code</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="nextcall">2017-01-01 03:00:00</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="code">model.cron_create_timesheets()</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

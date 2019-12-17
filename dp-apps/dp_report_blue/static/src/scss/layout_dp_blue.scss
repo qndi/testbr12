@@ -1,0 +1,74 @@
+$report-color: #485e75;
+
+div #information_block {
+    margin-left: 20px;
+}
+
+.o_blue_footer, .o_blue_header, .o_report_layout_blue {
+    font-family: 'Lato';
+    color: gray('700');
+    font-size: 12px;
+}
+.o_blue_header {
+    img {
+        max-height: 100px;
+    }
+    h4 {
+        color: $o-we-color-text-normal;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+}
+.o_blue_footer {
+    margin-top: 200px;
+    white-space: nowrap;
+    ul {
+        margin: 4px 0;
+    }
+}
+.o_report_layout_blue {
+    // This is not a general rule since the id is not used in all the reports,
+    // we should make a general structure for report body to use it everywhere
+    #informations {
+
+        padding-top: 10px;
+        margin: 0;
+    }
+    > h2 {
+        text-transform: uppercase;
+    }
+    table {
+
+        thead {
+            tr th {
+                border-top: none !important;
+                border-bottom: 2px solid gray('700') !important;
+                text-transform: uppercase;
+            }
+        }
+        tbody {
+            color: gray('700');
+            tr {
+                td {
+                }
+
+            }
+            tr:last-child {
+            }
+
+        }
+    }
+    /*Total table*/
+    .row > .col-4 > table {
+        td {
+        }
+        tr:last-child td, tr:first-child td {
+
+        }
+        tr:first-child td {
+        }
+        tr:last-child td {
+
+        }
+    }
+}

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018-Today datenpol gmbh(<http://www.datenpol.at>)
+     License OPL-1 or later (https://www.odoo.com/documentation/user/11.0/legal/licenses/licenses.html#licenses). -->
+
+<odoo>
+
+    <record id="view_dp_config_form" model="ir.ui.view">
+        <field name="name">view_dp_config_form</field>
+        <field name="model">dp.config</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="date"/>
+                            <field name="date_end"/>
+                            <field name="action"/>
+                            <field name="zip_filename" invisible="1"/>
+                            <field name="zip_file" filename="zip_filename"/>
+                        </group>
+                        <group>
+                            <field name="export_from"/>
+                            <field name="export_products"/>
+                            <field name="export_partners"/>
+                            <field name="file_cnt"/>
+                            <field name="app_cnt"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Logs">
+                            <group>
+                                <field name="log_ids">
+                                    <tree decoration-danger="is_error">
+                                        <field name="name"/>
+                                        <field name="state"/>
+                                        <field name="is_error" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Details">
+                            <group>
+                                <field name="detail_ids">
+                                    <tree decoration-warning="is_warn">
+                                        <field name="name"/>
+                                        <field name="export_cnt"/>
+                                        <field name="total_cnt"/>
+                                        <field name="is_warn" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button invisible="not context.get('show_reload', False)" name="button_reload" string="Reload" class="btn-primary" type="object"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dp_config_search" model="ir.ui.view">
+        <field name="name">view_dp_config_search</field>
+        <field name="model">dp.config</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="action"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_dp_config_tree" model="ir.ui.view">
+        <field name="name">view_dp_config_tree</field>
+        <field name="model">dp.config</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="date"/>
+                <field name="action"/>
+                <field name="file_cnt"/>
+                <field name="app_cnt"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_dp_config" model="ir.actions.act_window">
+        <field name="name">Konfiguration</field>
+        <field name="res_model">dp.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="menu_dp_config" model="ir.ui.menu">
+        <field name="name">Import/Export Historie</field>
+        <field name="parent_id" ref="base.menu_ir_property"/>
+        <field name="action" ref="action_dp_config"/>
+        <field name="sequence" eval="160"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dp_timesheet,dp.timesheet,model_dp_timesheet,base.group_user,1,1,1,1
+access_dp_timesheet_day,dp.timesheet.day,model_dp_timesheet_day,base.group_user,1,1,1,1
+access_dp_leave_template,dp.leave.template,model_dp_leave_template,base.group_user,1,0,0,0
+access_dp_leave_template_manager,dp.leave.template manager,model_dp_leave_template,hr_holidays.group_hr_holidays_manager,1,1,1,1
+access_dp_leave_template_line,dp.leave.template.line,model_dp_leave_template_line,base.group_user,1,0,0,0
+access_dp_leave_template_line_manager,dp.leave.template.line manager,model_dp_leave_template_line,hr_holidays.group_hr_holidays_manager,1,1,1,1
+access_dp_overtime,dp.overtime,model_dp_overtime,base.group_user,1,0,0,0
+access_dp_overtime_manager,dp.overtime manager,model_dp_overtime,hr_attendance.group_hr_attendance_manager,1,1,1,1
+hr_attendance.access_hr_attendance_system_user,hr.attendance.system.user,hr_attendance.model_hr_attendance,base.group_user,1,1,1,1

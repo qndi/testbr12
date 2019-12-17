@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dp_config,access_dp_config,model_dp_config,base.group_user,1,0,0,0
+modify_dp_config,modify_dp_config,model_dp_config,base.group_system,1,1,1,0
+access_dp_config_log,access_dp_config_log,model_dp_config_log,base.group_user,1,0,0,0
+access_dp_config_detail,access_dp_config_detail,model_dp_config_detail,base.group_user,1,0,0,0

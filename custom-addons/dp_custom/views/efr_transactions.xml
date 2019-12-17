@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018-Today datenpol gmbh(<http://www.datenpol.at>)
+     License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses). -->
+
+<odoo>
+
+    <record id="efr_transactions_view_form" model="ir.ui.view">
+        <field name="name">dp_efr_transactions_view_form</field>
+        <field name="model">efr.transactions</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="cash_register_id" domain="[('partner_id', '=', partner_id)]"/>
+                            <field name="period"/>
+                            <field name="qty"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="efr_transactions_view_search" model="ir.ui.view">
+        <field name="name">dp_efr_transactions_view_search</field>
+        <field name="model">efr.transactions</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id"/>
+                <field name="period"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Unternehmen" name="group_partner_id" domain="[]"
+                            context="{'group_by':'partner_id'}"/>
+                    <filter string="Kassa" name="cash_register_id" domain="[]"
+                            context="{'group_by':'cash_register_id'}"/>
+                    <filter string="Periode" name="period" domain="[]" context="{'group_by':'period'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="efr_transactions_view_tree" model="ir.ui.view">
+        <field name="name">dp_efr_transactions_view_tree</field>
+        <field name="model">efr.transactions</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="partner_id"/>
+                <field name="cash_register_id"/>
+                <field name="period"/>
+                <field name="location_id"/>
+                <field name="qty"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="efr_transactions_view_pivot" model="ir.ui.view">
+        <field name="name">dp_efr_transactions_view_pivot</field>
+        <field name="model">efr.transactions</field>
+        <field name="arch" type="xml">
+            <pivot string="Transaktionen">
+                <field name="qty" type="measure"/>
+                <field name="period" interval="month" type="col"/>
+                <field name="partner_id" type="row"/>
+                <field name="location_id" type="row"/>
+                <field name="cash_register_id" type="row"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="efr_transactions_action" model="ir.actions.act_window">
+        <field name="name">EFR Transaktionen</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">efr.transactions</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,pivot</field>
+    </record>
+
+    <menuitem id="efr_transactions_menu"
+              name="Transaktionen"
+              parent="subscription_efr_menu"
+              action="efr_transactions_action"
+              sequence="16"
+    />
+
+</odoo>

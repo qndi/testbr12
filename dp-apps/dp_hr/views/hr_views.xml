@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017-Today datenpol gmbh (<https://www.datenpol.at/>)
+    License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses).
+-->
+
+<odoo>
+    <record id="hr_leave_view_form_inherit_dp_hr" model="ir.ui.view">
+        <field name="name">hr_leave_view_form_inherit_dp_hr</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
+        <field name="arch" type="xml">
+            <label for="request_unit_half" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </label>
+            <field name="request_unit_half" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <!--
+        This is a copy of the Odoo view hr_holidays.hr_leave_view_form,
+        stripped to the parts we need. It also includes a limitation of the
+        shown leave types to vacation and compensation. We want that here,
+        but nowhere else. However the same view is at least used for the
+        public holidays as well.
+        A context from the action didn't propagate into hr.leave,search().
+    -->
+    <record id="hr_leave_view_form_vacation" model="ir.ui.view">
+        <field name="name">hr_leave_view_form_vacation</field>
+        <field name="model">hr.leave</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="can_reset" invisible="1"/>
+                <field name="can_approve" invisible="1"/>
+                <header>
+                    <button string="Bestätigen" name="action_confirm" states="draft" type="object" class="oe_highlight"/>
+                    <button string="Genehmigen" name="action_approve" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('can_approve', '=', False), ('state', '!=', 'confirm')]}"/>
+                    <button string="Ablehnen" name="action_refuse"  type="object" attrs="{'invisible': ['|', ('can_approve', '=', False), ('state', 'not in', ('confirm','validate','validate1'))]}"/>
+                    <button string="Zurücksetzen" name="action_draft" type="object"
+                        attrs="{'invisible': ['|', ('can_reset', '=', False), ('state', 'not in', ['confirm', 'refuse'])]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="confirm, validate"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id" invisible="1"/>
+                            <field name="holiday_status_id"
+                                context="{'limit_leave_types': 1, 'employee_id': employee_id, 'default_date_from': date_from}"
+                                options="{'no_create': True, 'no_open': True}"
+                            />
+
+                            <!--
+                                Odoo does some confusing things with these
+                                displayed and real fields and onchange methods.
+                                The invisible field must be here, otherwise the
+                                value will be zeroed while saving. That only
+                                happens when using the web form or the
+                                unittest form emulation.
+                            -->
+                            <field name="number_of_days" invisible="1"/>
+                            <label for="number_of_days_display" string="Dauer"/>
+                            <div>
+                                <div>
+                                    <field name="number_of_days_display" nolabel="1" class="oe_inline"/>
+                                    <span class="ml8">Tage</span>
+                                </div>
+                            </div>
+
+                            <label for="request_date_from" string="Von"/>
+                            <div>
+                                <!--
+                                    Odoo does some confusing things with these
+                                    displayed and real fields and onchange
+                                    methods. The invisible fields must be here,
+                                    otherwise the value will be changed to the
+                                    current date while saving. That only
+                                    happens when using the web form or the
+                                    unittest form emulation.
+                                -->
+                                <field name="date_from" invisible="1"/>
+                                <field name="date_to" invisible="1"/>
+                                <div class="o_row o_row_readonly">
+                                    <field name="request_date_from" class="oe_inline"
+                                        attrs="{'readonly': [('state', 'not in', ('draft', 'confirm'))]}"/>
+                                    <span class="oe_inline">
+                                        Bis
+                                    </span>
+                                    <field name="request_date_to" class="oe_inline"
+                                        attrs="{
+                                        'readonly': [('state', 'not in', ('draft', 'confirm'))],
+                                    }"/>
+                                </div>
+                            </div>
+                            <field name="name" required="1" attrs="{'readonly': [('state', 'not in', ('draft', 'confirm'))]}"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="open_leave_action" model="ir.actions.act_window">
+        <field name="name">Urlaubsanträge</field>
+        <field name="res_model">hr.leave</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,calendar,kanban,activity</field>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'tree'}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('hr_leave_view_form_vacation')}),
+            (0, 0, {'view_mode': 'calendar', 'view_id': ref('hr_holidays.hr_leave_view_calendar')}),
+        ]"/>
+        <field name="context">{
+            'only_vacations': 1,
+            'search_default_my_leaves': 1,
+        }
+        </field>
+    </record>
+
+    <record id="open_sickness_action" model="ir.actions.act_window">
+        <field name="name">Krankenstände</field>
+        <field name="res_model">hr.leave</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,calendar,kanban,activity</field>
+        <field name="context">{
+            'only_sicknesses': 1,
+            'search_default_my_leaves': 1,
+        }
+        </field>
+    </record>
+
+    <record id="open_sickness" model="ir.actions.act_window">
+        <field name="name">Krankenstände</field>
+        <field name="res_model">hr.leave</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="hr_holidays.hr_leave_view_form"/>
+        <field name="search_view_id" ref="hr_holidays.view_hr_holidays_filter"/>
+    </record>
+
+    <record id="action_open_sickness_tree" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="hr_holidays.hr_leave_view_tree"/>
+        <field name="act_window_id" ref="open_sickness"/>
+    </record>
+
+    <record id="action_open_sickness_form" model="ir.actions.act_window.view">
+        <field name="sequence">3</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="hr_holidays.hr_leave_view_form_manager"/>
+        <field name="act_window_id" ref="open_sickness"/>
+    </record>
+
+    <record id="action_open_sickness_calendar" model="ir.actions.act_window.view">
+        <field name="sequence">2</field>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="hr_holidays.hr_leave_view_calendar"/>
+        <field name="act_window_id" ref="open_sickness"/>
+    </record>
+
+
+    <record id="open_public_holiday_action" model="ir.actions.act_window">
+        <field name="name">Feiertage</field>
+        <field name="res_model">hr.leave</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,kanban,activity</field>
+        <field name="context">{
+            'only_public_holidays': 1,
+            'search_default_my_leaves': 1,
+            }
+        </field>
+    </record>
+
+    <record id="open_public_holiday" model="ir.actions.act_window">
+        <field name="name">Feiertage</field>
+        <field name="res_model">hr.leave</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="hr_holidays.hr_leave_view_form"/>
+        <field name="search_view_id" ref="hr_holidays.view_hr_holidays_filter"/>
+    </record>
+
+    <record id="action_open_public_holiday_tree" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="hr_holidays.hr_leave_view_tree"/>
+        <field name="act_window_id" ref="open_public_holiday"/>
+    </record>
+
+    <record id="action_open_public_holiday_form" model="ir.actions.act_window.view">
+        <field name="sequence">3</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="hr_holidays.hr_leave_view_form"/>
+        <field name="act_window_id" ref="open_public_holiday"/>
+    </record>
+
+    <record id="action_open_public_holiday_calendar" model="ir.actions.act_window.view">
+        <field name="sequence">2</field>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="hr_holidays.hr_leave_view_calendar"/>
+        <field name="act_window_id" ref="open_public_holiday"/>
+    </record>
+
+
+    <record id="hr_leave_allocation_view_tree_inherit_dp_hr" model="ir.ui.view">
+        <field name="name">hr_leave_allocation_view_tree_inherit_dp_hr</field>
+        <field name="model">hr.leave.allocation</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_allocation_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="employee_id" position="after">
+                <field name="date_effective"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="hr_leave_allocation_view_form_inherit_dp_hr" model="ir.ui.view">
+        <field name="name">hr_leave_allocation_view_form_inherit_dp_hr</field>
+        <field name="model">hr.leave.allocation</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_allocation_view_form"/>
+        <field name="arch" type="xml">
+            <field name="holiday_status_id" position="after">
+                <field name="date_effective"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="open_leave_allocation_action" model="ir.actions.server">
+        <field name="name">Urlaubszuschreibungen</field>
+        <field name="model_id" ref="hr_holidays.model_hr_leave_allocation"/>
+        <field name="state">code</field>
+        <field name="code">action = model.action_open_leave_allocation()</field>
+    </record>
+
+
+    <record id="view_employee_form" model="ir.ui.view">
+        <field name="name">view_employee_form</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='toggle_active']" position="before">
+                <button class="oe_stat_button" type="object" name="action_open_timereports" icon="fa-calendar">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Time Reports</span>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_attendance_tree_inherit_dp_hr" model="ir.ui.view">
+        <field name="name">view_attendance_tree_inherit_dp_hr</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+        <field name="arch" type="xml">
+            <field name="check_out" position="after">
+                <field name="is_travel_time"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="hr_attendance_view_form_inherit_dp_hr" model="ir.ui.view">
+        <field name="name">hr_attendance_view_form_inherit_dp_hr</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+        <field name="arch" type="xml">
+            <field name="check_out" position="after">
+                <field name="is_travel_time"/>
+            </field>
+        </field>
+    </record>
+</odoo>

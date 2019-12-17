@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018-Today datenpol gmbh(<http://www.datenpol.at>)
+     License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses). -->
+
+<odoo>
+
+    <record id="efr_cash_register_view_form" model="ir.ui.view">
+        <field name="name">dp_efr_cash_register_view_form</field>
+        <field name="model">efr.cash_register</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="show_transactions" string="Transaktionen" type="object" icon="fa-exchange"
+                                class="oe_stat_button"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="portal_id"/>
+                            <field name="partner_id"/>
+                            <field name="location_id" domain="[('partner_id', '=', partner_id)]"/>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="date_last_transaction"/>
+                            <field name="efr_registers"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="efr_cash_register_view_search" model="ir.ui.view">
+        <field name="name">dp_efr_cash_register_view_search</field>
+        <field name="model">efr.cash_register</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="portal_id"/>
+                <field name="partner_id"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Unternehmen" name="partner_id" domain="[]" context="{'group_by':'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="efr_cash_register_view_tree" model="ir.ui.view">
+        <field name="name">dp_efr_cash_register_view_tree</field>
+        <field name="model">efr.cash_register</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="portal_id"/>
+                <field name="partner_id"/>
+                <field name="location_id"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="date_last_transaction"/>
+                <field name="efr_registers"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="efr_cash_register_action" model="ir.actions.act_window">
+        <field name="name">EFR Kassa</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">efr.cash_register</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- ATTENTION: menuitem works with window action only, else use record tag-->
+    <menuitem id="efr_cash_register_menu"
+              name="Kassen"
+              parent="subscription_efr_menu"
+              action="efr_cash_register_action"
+              sequence="5"
+    />
+
+</odoo>

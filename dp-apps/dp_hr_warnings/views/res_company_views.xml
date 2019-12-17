@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017-Today datenpol gmbh (<https://www.datenpol.at/>)
+    License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses).
+-->
+
+<odoo>
+    <record id="res_company_form_view" model="ir.ui.view">
+        <field name="name">res_company_form_view</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='timesheets']/group" position="inside">
+                <field name="max_work_without_break" widget="float_time"/>
+                <field name="min_break_in_hours" widget="float_time"/>
+                <field name="max_work_per_day" widget="float_time"/>
+                <field name="warning_work_on_weekends"/>
+                <field name="warning_work_on_absent"/>
+                <field name="earliest_work_begin" widget="float_time"/>
+                <field name="latest_work_end" widget="float_time"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

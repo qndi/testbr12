@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017-Today datenpol gmbh (<https://www.datenpol.at/>)
+    License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses).
+-->
+
+<odoo>
+    <!-- Report Template -->
+    <template id="dp_timesheet_report_document" inherit_id="dp_hr.dp_timesheet_report_document">
+        <xpath expr="//div[@id='general_information']" position="inside">
+            <div class="col-3">
+                Chargeability:
+                <span t-field="o.chargeability"/>
+                %
+            </div>
+        </xpath>
+
+        <xpath expr="//table[hasclass('table', 'table-bordered', '.small')]/tbody/tr[6]" position="after">
+            <tr>
+                <td>Projektzeiten</td>
+                <td class="text-right" t-foreach="o.day_ids" t-as="day">
+                    <span t-if="day.project_hours" t-field="day.project_hours"/>
+                </td>
+                <td class="text-right" style="border-left: 2px solid #000000;">
+                    <strong>
+                        <span t-if="o.project_hours" t-field="o.project_hours"/>
+                    </strong>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Chargeable</td>
+                <td class="text-right" t-foreach="o.day_ids" t-as="day">
+                    <span t-if="day.chargeable_hours" t-field="day.chargeable_hours"/>
+                </td>
+                <td class="text-right" style="border-left: 2px solid #000000;">
+                    <strong>
+                        <span t-if="o.chargeable_hours" t-field="o.chargeable_hours"/>
+                    </strong>
+                </td>
+            </tr>
+        </xpath>
+
+        <xpath expr="//div[@id='additional_info']" position="inside">
+            <t t-set="project_data" t-value="o.get_project_data()"/>
+            <t t-set="project_data_chargeable" t-value="project_data['chargeable']"/>
+            <t t-set="project_data_non_chargeable" t-value="project_data['non_chargeable']"/>
+            <div class="col-6">
+                <table class="table table-condensed">
+                    <tbody>
+                        <tr>
+                            <th style="width: 10mm; border-top: 0;"/>
+                            <th style="border-top: 0; border-bottom: 2px solid #000000;">Projektname</th>
+                            <th class="text-right" style="border-top: 0; border-bottom: 2px solid #000000;">Projektstunden</th>
+                        </tr>
+                        <tr>
+                            <td style="border-top: 0;"/>
+                            <td t-if="project_data_chargeable" colspan="2" style="border-top: 0;">
+                                <i>Chargeable Projekte</i>
+                            </td>
+                        </tr>
+                        <tr t-foreach="project_data_chargeable" t-as="project_chargeable">
+                            <td style="border-top: 0; border-bottom: 0;"/>
+                            <td><span t-esc="project_chargeable['name']"/></td>
+                            <td class="text-right"><span t-esc="project_chargeable['project_hours']"/></td>
+                        </tr>
+
+                        <tr>
+                            <td style="border-top: 0;"/>
+                            <td t-if="project_data_non_chargeable" colspan="2" style="border-top: 0;">
+                                <i>Non-Chargeable Projekte</i>
+                            </td>
+                        </tr>
+                        <tr t-foreach="project_data_non_chargeable" t-as="project_non_chargeable">
+                            <td style="border-top: 0; border-bottom: 0;"/>
+                            <td><span t-esc="project_non_chargeable['name']"/></td>
+                            <td class="text-right"><span t-esc="project_non_chargeable['project_hours']"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </xpath>
+    </template>
+</odoo>

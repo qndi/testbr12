@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2018-Today datenpol gmbh(<http://www.datenpol.at>)
+     License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses). -->
+
+<!--
+    This Cronjob needs to be implemented for every model the classifier is used for.
+    It's enough to replace all model_name occurances with the actual model name.
+-->
+<odoo>
+    <record id="ml_train_model_name" model="ir.cron">
+        <field name="name">ml_train model_name</field>
+        <field name="model_id" ref="model_model_name"/>
+        <field name="state">code</field>
+        <field name="code">model.ml_train()</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+        <field name="numbercall">-1</field>
+        <field name="active">False</field>
+    </record>
+</odoo>

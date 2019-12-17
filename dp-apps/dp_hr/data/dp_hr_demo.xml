@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017-Today datenpol gmbh (<https://www.datenpol.at/>)
+    License OPL-1 or later (https://www.odoo.com/documentation/user/12.0/legal/licenses/licenses.html#licenses).
+-->
+
+<odoo noupdate="1">
+    <function model="dp.timesheet" name="postinstall_demo"/>
+
+    <!-- Contracts -->
+    <record id="contract_qdp_1" model="hr.contract">
+        <field name="name">Marc Demo 40h bis 7.</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+        <field name="date_start">2018-10-01</field>
+        <field name="date_end">2018-10-07</field>
+        <field name="state">close</field>
+        <field name="wage">0</field>
+    </record>
+
+    <record id="contract_qdp_2" model="hr.contract">
+        <field name="name">Marc Demo 35h ab 8.</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+        <field name="resource_calendar_id" ref="resource.resource_calendar_std_35h"/>
+        <field name="date_start">2018-10-08</field>
+        <field name="state">open</field>
+        <field name="wage">0</field>
+    </record>
+
+
+    <!-- Attendances -->
+    <record id="attendance_qdp_1" model="hr.attendance">
+        <field name="check_in">2018-10-01 08:21</field>
+        <field name="check_out">2018-10-01 12:21</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+    </record>
+
+    <record id="attendance_qdp_2" model="hr.attendance">
+        <field name="check_in">2018-10-01 13:21</field>
+        <field name="check_out">2018-10-01 17:21</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+    </record>
+
+    <record id="attendance_qdp_3" model="hr.attendance">
+        <field name="check_in">2018-10-02 08:00</field>
+        <field name="check_out">2018-10-02 12:00</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+    </record>
+
+    <record id="attendance_qdp_4" model="hr.attendance">
+        <field name="check_in">2018-10-02 13:00</field>
+        <field name="check_out">2018-10-02 18:00</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+    </record>
+
+    <record id="attendance_qdp_5" model="hr.attendance">
+        <field name="check_in">2018-10-03 07:20</field>
+        <field name="check_out">2018-10-03 11:20</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+    </record>
+
+    <record id="attendance_qdp_6" model="hr.attendance">
+        <field name="check_in">2018-10-04 07:20</field>
+        <field name="check_out">2018-10-04 11:20</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+    </record>
+
+    <record id="attendance_qdp_7" model="hr.attendance">
+        <field name="check_in">2018-10-04 12:20</field>
+        <field name="check_out">2018-10-04 14:20</field>
+        <field name="is_travel_time" eval="True"/>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+    </record>
+
+    <record id="attendance_qdp_8" model="hr.attendance">
+        <field name="check_in">2018-10-06 12:20</field>
+        <field name="check_out">2018-10-06 14:20</field>
+        <field name="is_travel_time" eval="True"/>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+    </record>
+
+    <record id="attendance_qdp_9" model="hr.attendance">
+        <field name="check_in">2018-10-13 03:50</field>
+        <field name="check_out">2018-10-13 18:50</field>
+        <field name="is_travel_time" eval="True"/>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+    </record>
+
+    <record id="attendance_qdp_10" model="hr.attendance">
+        <field name="check_in">2018-10-27 07:59</field>
+        <field name="check_out">2018-10-27 09:59</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+    </record>
+
+
+    <!-- Leave Types -->
+    <!--
+        Odoo creates this leave type with a validity period of the current
+        year during installation. That means our test compensation days are
+        outside the period.
+        To work around that we extend the validity into the past so that our
+        dates are covered. We don't put our test cases in the current year
+        to avoid the need to adapt them every year to the shifting weekdays.
+    -->
+    <record id="hr_holidays.holiday_status_comp" model="hr.leave.type">
+        <field name="validity_start">2018-01-01</field>
+    </record>
+
+
+    <!-- Leave Allocations -->
+    <record id="leave_allocation_qdp_1" model="hr.leave.allocation">
+        <field name="name">Jahresurlaub 25 Tage</field>
+        <field name="holiday_status_id" ref="dp_hr.leave_type_vacation"/>
+        <field name="number_of_days">25</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+        <field name="date_effective">2018-10-01</field>
+        <field name="state">validate</field>
+    </record>
+
+
+    <!-- Leaves -->
+    <record id="sickness_qdp_1" model="hr.leave">
+        <field name="name">Krankenstand 3 Tage</field>
+        <field name="holiday_status_id" ref="hr_holidays.holiday_status_sl"/>
+        <field name="date_from">2018-10-13</field>
+        <field name="date_to">2018-10-15</field>
+        <field name="request_date_from">2018-10-13</field>
+        <field name="request_date_to">2018-10-15</field>
+        <field name="number_of_days">3</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+        <field name="state">validate</field>
+    </record>
+
+    <record id="vacation_qdp_1" model="hr.leave">
+        <field name="name">Urlaub 7 Tage</field>
+        <field name="holiday_status_id" ref="dp_hr.leave_type_vacation"/>
+        <field name="date_from">2018-10-20</field>
+        <field name="date_to">2018-10-26</field>
+        <field name="request_date_from">2018-10-20</field>
+        <field name="request_date_to">2018-10-26</field>
+        <field name="number_of_days">5</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+        <field name="state">validate</field>
+    </record>
+
+    <record id="compensation_qdp_1" model="hr.leave">
+        <field name="name">Zeitausgleich 1 Tag</field>
+        <field name="holiday_status_id" ref="hr_holidays.holiday_status_comp"/>
+        <field name="date_from">2018-10-08</field>
+        <field name="date_to">2018-10-08</field>
+        <field name="request_date_from">2018-10-08</field>
+        <field name="request_date_to">2018-10-08</field>
+        <field name="number_of_days">1</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+        <field name="state">validate</field>
+    </record>
+
+
+    <!-- Leave Templates -->
+    <record id="leave_template_1" model="dp.leave.template">
+        <field name="name">Feiertage</field>
+        <field name="apply_to_new_employees">1</field>
+    </record>
+
+    <record id="leave_template_1_l1" model="dp.leave.template.line">
+        <field name="name">Testfeiertag am 10.</field>
+        <field name="template_id" ref="leave_template_1"/>
+        <field name="date">2018-10-10</field>
+    </record>
+
+    <record id="leave_template_1_l2" model="dp.leave.template.line">
+        <field name="name">Testfeiertag am 12.</field>
+        <field name="template_id" ref="leave_template_1"/>
+        <field name="date">2018-10-12</field>
+    </record>
+
+
+    <!-- Overtimes -->
+    <record id="overtime_qdp_1" model="dp.overtime">
+        <field name="name">Übertrag von 10 Mehrstunden</field>
+        <field name="hours">10</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+        <field name="date">2018-10-01</field>
+    </record>
+
+
+    <!-- Timesheets -->
+    <record id="timesheet_qdp_1" model="dp.timesheet">
+        <field name="date_from">2018-10-01</field>
+        <field name="date_to">2018-10-31</field>
+        <field name="employee_id" ref="hr.employee_qdp"/>
+    </record>
+</odoo>
